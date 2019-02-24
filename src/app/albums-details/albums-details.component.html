@@ -1,3 +1,15 @@
-<p>
-  albums-details works!
-</p>
+<div *ngIf="album" class="card">
+  <img class="card-img-top" src="https://picsum.photos/300/200?image={{ album.id }}" alt="Group Music">
+  <div class="card-body">
+    <h5 class="card-title">{{ album.title }}</h5>
+    <p class="card-text">Name : {{ album.name }}</p>
+    <a href="#" class="btn btn-primary" (click)="play(album)">Play >> </a>
+  </div>
+  <ul class="list-group" *ngIf="songs">
+    <h2>Playlist</h2>
+    <li *ngFor="let song of songs.list "
+        (click)="selectSong(song)"
+        [class.active]="song === selectedSong"
+        class="list-group-item" >{{song}}</li>
+  </ul>
+</div><!-- .card -->

@@ -1,25 +1,44 @@
 <div class="row content">
   <!-- AlbumDetails -->
   <div class="col-sm-4 video">
-    <app-albums-details [album]="selectedAlbum" (onPlay)="playParent($event)"></app-albums-details>
-  </div>
-  <!-- .video -->
-  <div class="col-sm-8 music">
+    <!-- AlbumDetails communication parent vers enfant -->
+    <app-album-details [album]="selectedAlbum" (onPlay)="playParent($event)"></app-album-details>
+  </div><!-- .video -->
+  <div *ngIf="pagedItems" class="col-sm-8 music">
     <h1>{{ titlePage }}</h1>
-    <!-- Pagination -->
+    <!-- pager -->
+    <nav aria-label="Page navigation example">
+      <ul *ngIf="pager.pages && pager.pages.length" class="pagination justify-content-center">
+        <li [ngClass]="{disabled:pager.currentPage === 1}" class="page-item">
+          <a class="page-link" (click)="setPage(1)">First</a>
+        </li>
+        <li [ngClass]="{disabled:pager.currentPage === 1}" class="page-item">
+          <a class="page-link" (click)="setPage(pager.currentPage - 1)">Previous</a>
+        </li>
+        <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}" class="page-item">
+          <a class="page-link" (click)="setPage(page)">{{page}}</a>
+        </li>
+        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}" class="page-item">
+          <a class="page-link" (click)="setPage(pager.currentPage + 1)">Next</a>
+        </li>
+        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}" class="page-item">
+          <a class="page-link" (click)="setPage(pager.totalPages)">Last</a>
+        </li>
+      </ul><!-- .pagination -->
+    </nav><!-- pager -->
     <!-- let index permet de récupérer l'indice numérique de la liste -->
-    <div class="card" *ngFor="let album of albums; let index = index;">
+    <div class="card" *ngFor="let album of pagedItems; let index = index;">
       <div class="card-header">
         <!-- permet d'afficher l'index -->
-        {{ index + 1 }} Pop <span *ngIf="status==album.id">[play]</span>
+        {{ index + 1 }} {{ album.ref }} <span *ngIf="status==album.id">[play]</span>
       </div>
       <div class="card-body">
-        <h5 class="card-title">{{album.title}}</h5>
-        <p class="card-text">{{album.description}}</p>
+        <h5 class="card-title">{{ album.title }}</h5>
+        <p class="card-text">{{ album.description }}</p>
         <!-- condition vérifiez si il y a des tags présent dans un album si ce n'est pas le cas la directive ne crée pas l'élément HTML dans le Component -->
         <ul *ngIf="album.tags" class="list-inline">
-          <li class="list-inline-item" *ngFor="let word of album.tags">
-            <span class="badge badge-info">{{ word }}</span>
+          <li class="list-inline-item" *ngFor="let tag of album.tags">
+            <span class="badge badge-info">{{ tag }}</span>
           </li>
         </ul>
         <a class="btn btn-outline-dark" href="#" role="button">en</a>
@@ -28,15 +47,30 @@
           <img class="glyph-icon" src="./assets/svg/si-glyph-heart.svg" />
           <small>{{ album.like }}</small>
         </ng-template>
-        <ng-template [ngIf]="album.duration">
-          <img class="glyph-icon" src="./assets/svg/si-glyph-timer.svg" />
-          <small>{{album.duration}} min</small>
-        </ng-template>
+        <img class="glyph-icon" src="./assets/svg/si-glyph-timer.svg" />
+        <small>{{ album.duration }}</small>
         <button (click)="onSelect(album)" class="btn btn-dark">Details</button>
       </div>
-    </div>
-    <!-- .card -->
-    <!-- Pagination -->
-  </div>
-  <!-- .music -->
-</div>
+    </div><!-- .card -->
+    <!-- pager -->
+    <nav aria-label="Page navigation example">
+      <ul *ngIf="pager.pages && pager.pages.length" class="pagination justify-content-center">
+        <li [ngClass]="{disabled:pager.currentPage === 1}" class="page-item">
+          <a class="page-link" (click)="setPage(1)">First</a>
+        </li>
+        <li [ngClass]="{disabled:pager.currentPage === 1}" class="page-item">
+          <a class="page-link" (click)="setPage(pager.currentPage - 1)">Previous</a>
+        </li>
+        <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}" class="page-item">
+          <a class="page-link" (click)="setPage(page)">{{page}}</a>
+        </li>
+        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}" class="page-item">
+          <a class="page-link" (click)="setPage(pager.currentPage + 1)">Next</a>
+        </li>
+        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}" class="page-item">
+          <a class="page-link" (click)="setPage(pager.totalPages)">Last</a>
+        </li>
+      </ul><!-- .pagination -->
+    </nav><!-- pager -->
+  </div><!-- .music -->
+</div><!-- .content -->
