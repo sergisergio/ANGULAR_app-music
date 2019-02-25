@@ -7,20 +7,46 @@ import { ALBUMS, ALBUM_LISTS } from './mock-albums';
   providedIn: 'root'
 })
 export class AlbumService {
-  albums: Album[] = ALBUMS;
-  albumLists: AlbumList[] = ALBUM_LISTS;
+
+  private _albums: Album[] = ALBUMS;
+  private _albumLists: AlbumList[] = ALBUM_LISTS;
 
   constructor() { }
+
+
   count() {
-    return this.albums.length;
+    return this._albums.length;
   }
   getAlbums(): Album[] {
-    return this.albums;
+    return this._albums.sort(
+      (a, b) => { return b.duration - a.duration }
+    );
   }
   getAlbum( id: string): Album {
-    return this.albums.find(elem => elem.id === id);
+    return this._albums.find(elem => elem.id === id);
   }
+
+  // recherche d'une référence dans la liste
   getAlbumList( id : string): AlbumList {
-    return this.albumLists.find(elem => elem.id === id);
+    return this._albumLists.find(elem => elem.id === id);
+  }
+
+  paginate(start: number, end: number):Album[]{
+
+    // utilisez la méthode slice pour la pagination
+    return this._albums.sort(
+      (a, b) => { return b.duration - a.duration }
+    ).slice(start, end);
+  }
+
+  search(word: string): Album[] {
+    if (word.length > 2) {
+      let response = [];
+      this._albums.forEach(album => {
+        if (album.title.includes(word)) response.push(album);
+      });
+
+      return response;
+    }
   }
 }
