@@ -13,6 +13,8 @@ import { AuthService } from './services/auth.service';
 import { SearchComponent } from './search/search.component';
 import { FruitsComponent } from './fruits/fruits.component';
 import { AlbumDescriptionComponent } from './album-description/album-description.component';
+import { PaginateComponent } from './paginate/paginate.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 const appRoutes: Routes = [
   { path: 'albums', component: AlbumsComponent },
@@ -32,12 +34,14 @@ const appRoutes: Routes = [
     AuthComponent,
     SearchComponent,
     FruitsComponent,
-    AlbumDescriptionComponent
+    AlbumDescriptionComponent,
+    PaginateComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     AppRoutingModule,
+    BrowserAnimationsModule,
     RouterModule.forRoot(appRoutes)
   ],
   providers: [,

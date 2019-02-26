@@ -1,4 +1,4 @@
-<div *ngIf="album" class="card">
+<div [@details]="isOpen? 'open' : 'opening'" class="card-details" *ngIf="album">
   <img *ngIf="album.url" class="card-img-top" src="{{album.url}}" alt="Group Music">
   <div class="card-body">
     <h5 class="card-title">{{ album.title }}</h5>
@@ -9,4 +9,4 @@
     <h2>Playlist</h2>
     <li *ngFor="let song of songs " class="list-group-item">{{song}}</li>
   </ul>
-</div><!-- .card -->
+</div>
