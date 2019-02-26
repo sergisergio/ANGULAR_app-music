@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Album } from './album';
 import { AlbumList } from './album-list';
 import { ALBUMS, ALBUM_LISTS } from './mock-albums';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -48,5 +49,12 @@ export class AlbumService {
 
       return response;
     }
+  }
+
+  paginateNumberPage():number{
+    if ( typeof environment.numberPage == 'undefined' )
+      throw "Attention la pagination n'est pas définie" ;
+
+    return environment.numberPage ;
   }
 }

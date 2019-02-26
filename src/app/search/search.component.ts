@@ -23,8 +23,5 @@ export class SearchComponent implements OnInit {
     const searchAlbums = this.albumService.search(form.value['word']);
     if (searchAlbums)
       this.searchAlbums.emit(searchAlbums);
-  }
-
-
-
+    }
 }

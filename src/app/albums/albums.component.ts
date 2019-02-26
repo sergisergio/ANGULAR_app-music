@@ -14,15 +14,16 @@ export class AlbumsComponent implements OnInit {
   albums: Album[] = ALBUMS;
   selectedAlbum: Album/* = this.albums[0]*/;
   selectedFruit: string = 'Mangue jaune';
+  pos : number;
   status: string = null; // pour gérer l'affichage des caractères [play]
 
   constructor(private albumService: AlbumService) {
     // contrôle de la méthode count
-    console.log(this.albumService.count)
+    //console.log(this.albumService.count);
   }
 
   ngOnInit() {
-    this.albums = this.albumService.paginate(0,5);
+    this.albums = this.albumService.paginate(0,this.albumService.paginateNumberPage());
   }
 
   onSelect(album: Album) {
@@ -39,4 +40,8 @@ export class AlbumsComponent implements OnInit {
     if ($event) this.albums = $event;
   }
 
+  // mise à jour de la pagination
+  paginate($event) {
+    this.albums = this.albumService.paginate($event.start, $event.end);
+  }
 }

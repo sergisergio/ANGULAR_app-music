@@ -10,7 +10,7 @@ import { AlbumService } from '../album.service';
 })
 export class AlbumDescriptionComponent implements OnInit {
 
-  album : Album ;
+  album: Album ;
 
   constructor(
     private route: ActivatedRoute, // récupérez le service route
