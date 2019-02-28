@@ -19,7 +19,7 @@ export class SearchComponent implements OnInit {
 
   onSubmit(form: NgForm): void {
   // récupération des données du formulaire
-  //console.log(form);
+    console.log(form);
     const searchAlbums = this.albumService.search(form.value['word']);
     if (searchAlbums)
       this.searchAlbums.emit(searchAlbums);
