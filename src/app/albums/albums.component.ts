@@ -13,9 +13,9 @@ export class AlbumsComponent implements OnInit {
   titlePage: string = "Page principale Albums Music";
   albums: Album[] = ALBUMS;
   selectedAlbum: Album/* = this.albums[0]*/;
-  selectedFruit: string = 'Mangue jaune';
-  pos : number;
-  status: string = null; // pour gérer l'affichage des caractères [play]
+  //selectedFruit: string = 'Mangue jaune';
+  //pos : number;
+  //status: string = null; // pour gérer l'affichage des caractères [play]
 
   constructor(private albumService: AlbumService) {
     // contrôle de la méthode count
@@ -32,8 +32,9 @@ export class AlbumsComponent implements OnInit {
   }
 
   playParent($event){
-    this.status = $event.id; // identifiant unique
-    console.log($event)
+    //this.status = $event.id; // identifiant unique
+    //console.log($event)
+    this.albumService.switchOn($event);
   }
 
   search($event) {

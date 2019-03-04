@@ -14,6 +14,7 @@ import { FruitsComponent } from './fruits/fruits.component';
 import { AlbumDescriptionComponent } from './album-description/album-description.component';
 import { PaginateComponent } from './paginate/paginate.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AudioPlayerComponent } from './audioplayer/audioplayer.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     SearchComponent,
     FruitsComponent,
     AlbumDescriptionComponent,
-    PaginateComponent
+    PaginateComponent,
+    AudioPlayerComponent
   ],
   imports: [
     BrowserModule,
