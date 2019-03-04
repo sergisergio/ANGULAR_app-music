@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 
 import { Album } from '../album';
 import { AlbumService } from '../album.service';
-import { ALBUMS } from '../mock-albums';
 
 @Component({
   selector: 'app-albums',
@@ -11,20 +10,18 @@ import { ALBUMS } from '../mock-albums';
 })
 export class AlbumsComponent implements OnInit {
   titlePage: string = "Page principale Albums Music";
-  albums: Album[] = ALBUMS;
-  selectedAlbum: Album/* = this.albums[0]*/;
-  //selectedFruit: string = 'Mangue jaune';
-  //pos : number;
-  //status: string = null; // pour gérer l'affichage des caractères [play]
+  albums: Album[] = [];
+  selectedAlbum: Album;
+  status: string = null; // pour gérer l'affichage des caractères [play]
+  perPage : number = 5;
 
   constructor(private albumService: AlbumService) {
-    // contrôle de la méthode count
-    //console.log(this.albumService.count);
+    // récupération des données depuis Firebase avec la méthode HttpClient
+    console.log(this.albumService.count());
   }
 
   ngOnInit() {
-    this.albums = this.albumService.paginate(0,this.albumService.paginateNumberPage());
-  }
+    this.albumService.paginate(0,5).subscribe(albums => this.albums = albums)  }
 
   onSelect(album: Album) {
     //console.log(album);
@@ -32,17 +29,19 @@ export class AlbumsComponent implements OnInit {
   }
 
   playParent($event){
-    //this.status = $event.id; // identifiant unique
-    //console.log($event)
+    this.status = $event.id; // identifiant unique
+    console.log($event)
     this.albumService.switchOn($event);
   }
 
   search($event) {
+    console.log($event);
     if ($event) this.albums = $event;
   }
 
   // mise à jour de la pagination
   paginate($event) {
-    this.albums = this.albumService.paginate($event.start, $event.end);
+    this.albumService.paginate($event.start, $event.end).subscribe(albums => this.albums = albums);
   }
+
 }

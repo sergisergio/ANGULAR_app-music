@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-//import { GuardService } from './guard.service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { interval, Observable } from 'rxjs';
-import { take, map } from 'rxjs/operators'; // opérateurs
+import { interval, Observable, Subscription } from 'rxjs';
+import { take, map } from 'rxjs/operators'; // opérateurs;
 
 @Component({
   selector: 'app-root',
@@ -10,30 +9,32 @@ import { take, map } from 'rxjs/operators'; // opérateurs
   styleUrls: ['./app.component.scss']
 })
 
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'app-music';
-  count: Observable<number>;
   time: string;
 
-  constructor(/*public guard: GuardService*/) {
+    ngOnInit(){
+        const counter = interval(1000);
 
-    // interval envoi toutes les secondes un compteur 1, 2, ...
-    this.count = interval(1000);
-    // on prépare les données avant de souscrire à l'Observable
-    const interval$ = this.count.
-      pipe(
-        map(num => {
-          let hours = Math.floor(num / 3600);
-          let minutes = Math.floor(num / 60);
+        const counterConvert = counter.pipe(
+          map(timer => {
+            let min = Math.floor(timer % 3600 / 60);
+            let h = Math.floor(timer / 3600);
+            let s = Math.floor(timer % 3600 % 60);
 
-          return `${hours} h ${minutes - hours * 60} min ${num - minutes * 60} s`
-        }),
-        take(12 * 60 * 3) // permet d'arrêter ici au bout de 12*3 minutes interval particulier à interval RxJS 6
+             return ('0' + h).slice(-2) + ":" + ('0' + min).slice(-2) + ":" + ('0' + s).slice(-2);
+          }
+             ),
+             take(12*60*60) //Arrête le compteur au bout de 12h
     )
+    counterConvert.subscribe(
+          (value) =>
+            this.time = value
+          );
+          console.error();
 
-    // on souscrit à l'Observable interval
-    interval$.subscribe(
-        num => this.time = num
-    );
-  }
+
+
+      }
+
 }

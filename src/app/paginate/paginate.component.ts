@@ -8,11 +8,12 @@ import { AlbumService } from '../album.service';
 })
 export class PaginateComponent implements OnInit {
 
+
   @Output() setPaginate: EventEmitter<{ start: number; end: number }> = new EventEmitter();
 
   pages: number[] = []; // pages num
   perPage: number; // number album(s) per page variable d'env
-  total: number = 0; // total albums
+  total; // total albums
   numberPages: number = 0;
   currentPage: number;
 
@@ -30,12 +31,12 @@ export class PaginateComponent implements OnInit {
    */
   init(page : number = 1) {
     this.total = this.aS.count();
-    this.numberPages = Math.ceil(this.total / this.perPage);
-    this.currentPage = page;
-    this.pages = [];
-    for (let i = 1; i < this.numberPages + 1; i++) {
-      this.pages.push(i);
-    }
+      this.numberPages = Math.ceil(this.total / this.perPage);
+      this.currentPage = page;
+      this.pages = [];
+      for (let i = 1; i < this.numberPages + 1; i++) {
+        this.pages.push(i);
+      }
   }
 
   selectedPage(page: number) {

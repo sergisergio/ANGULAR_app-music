@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Album } from '../album';
 import { AlbumList } from '../album-list';
-import { ALBUM_LISTS } from '../mock-albums';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { AlbumService } from '../album.service';
 
 @Component({
   selector: 'app-album-details',
@@ -23,16 +23,17 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
   ],
 })
 export class AlbumDetailsComponent implements OnInit {
+
   // Classe Input permet de récupérer les data de l'enfant
   // album est liée à une entrée [album] du parent dans le sélecteur
   @Input() album: Album;
   @Output() onPlay: EventEmitter<Album> = new EventEmitter();
 
-  albumLists: AlbumList[] = ALBUM_LISTS; // récupération de la liste des chasons
-  songs: Array<string> = [];
-  isOpen : boolean = false;
+  //albumLists: AlbumList[] = ALBUM_LISTS; // récupération de la liste des chasons
+  songs: AlbumList;
+  isActive : boolean = false;
 
-  constructor() { }
+  constructor(private albumService : AlbumService) { }
 
   ngOnInit() {
   }
@@ -44,19 +45,16 @@ export class AlbumDetailsComponent implements OnInit {
     // des chansons.
     if(this.album){
       // récupération de la liste des chansons
-      const id = this.album.id ;
-      const al = this.albumLists.find(elem => elem.id === id) ;
-      if(al) this.songs =  al.list;
+      this.albumService.getAlbumList(this.album.id).subscribe(songObservable => this.songs = songObservable );
+      console.log(this.songs);
+      this.isActive = false;
 
-      // animation
-      this.isOpen = false;
-      const animate = setInterval( () => {
-          this.isOpen = ! this.isOpen;
-          clearInterval(animate);
-        }
-        , 10);
+      const animate = setInterval(() => {
+        this.isActive = !this.isActive;
+        clearInterval(animate)
+      },90)
+
     }
-
   }
 
   play(album: Album) {
