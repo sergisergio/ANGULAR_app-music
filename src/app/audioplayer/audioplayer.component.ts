@@ -1,56 +1,59 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AlbumService } from '../album.service';
+import { interval } from 'rxjs'; // Observable
+import { take, map, mergeMap } from 'rxjs/operators'; // opérateurs
+import { Album } from '../album';
 
 @Component({
-selector: 'app-audio-player',
-templateUrl: './audioplayer.component.html',
-styleUrls: ['./audioplayer.component.scss']
+    selector: 'app-audio-player',
+    templateUrl: './audioplayer.component.html',
+    styleUrls: ['./audioplayer.component.scss']
 })
 export class AudioPlayerComponent implements OnInit {
 
-@Input() album : string;
-showplayer: boolean = false;
-// variable publique pour y avoir accès dans le template
-current: number = 1;
-total: number = 1;
-ratio: number = 0;
+    current: number = 1;
+    total: number;
+    ratio: number = 0;
+    step: number;
+    album: Album;
 
-constructor(private aS: AlbumService) { }
+    constructor(private aS: AlbumService) { }
 
-  ngOnInit() {
+    ngOnInit() {
 
-    // souscription au service qui est également un subject
-    // Observable auquel on a souscrit
-    // On lance le subject ouvert pour les players pas de désabonnement
-    this.aS.subjectAlbum.subscribe(
-      album => {
-        // console.log(album)
-        this.showplayer = true; // player
-        this.current = 1;
-        let duration = album.duration; // chaque morceau fait 120 secondes
-        this.total = Math.floor(duration / 120); // nombre de morceau
-        this.ratio = Math.floor(100 / this.total); // ratio pour la barre de progression avec Bootstrap
-        let step = this.ratio;
+        // définir un streaming de chanson simulé
+        const interval$ = interval(12 * 100);
 
-        const timer = 120 * 1000; // toutes les deux minutes on passe au morceau suivant
+        this.aS.subjectAlbum
+            .pipe(
+                // mergeMap permet de merger les observables
+                mergeMap(album => {
+                        this.total = Math.floor(album.duration / 120)
+                        this.album = album;
 
-        // console.log(this.total);
-        // console.log(this.ratio);
+                        return interval$.pipe(
+                            take(this.total),
+                            // partir de 1 et non de 0
+                            map(x => x + 1)
+                        )
+                    }
+                )
+            )
+            .subscribe(
+                x => {
+                    this.current = x;
+                    this.ratio = Math.floor(x * (100 / this.total));
 
-        // toutes les deux minutes on passe au morceau suivant
-        const player = setInterval(() => {
-          this.current++;
-          this.ratio += step; // on ajoute le ratio
-          console.log(this.ratio);
-          if (this.ratio > 100) {
-            clearInterval(player);
-            this.showplayer = false;
-            // mise à jour du status dans l'album
-            this.aS.switchOff(album); // mise à jour d'album
-          }
-        }, timer)
-      }
-)
-}
+                    // remettre à jour les données bar de progression et album
+                    if(this.current == this.total){
+                        this.aS.switchOff(this.album);
+                        this.total = null;
+                        this.ratio = 0;
+                        this.current = 1;
+                    }
+                }
+            )
+
+    }
 
 }

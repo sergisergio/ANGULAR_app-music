@@ -1,6 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-
-import { interval, Observable, Subscription } from 'rxjs';
+import { Component } from '@angular/core';
+import { interval } from 'rxjs';
 import { take, map } from 'rxjs/operators'; // opérateurs;
 
 @Component({
@@ -9,32 +8,28 @@ import { take, map } from 'rxjs/operators'; // opérateurs;
   styleUrls: ['./app.component.scss']
 })
 
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'app-music';
   time: string;
 
-    ngOnInit(){
-        const counter = interval(1000);
+    constructor(){
 
-        const counterConvert = counter.pipe(
-          map(timer => {
-            let min = Math.floor(timer % 3600 / 60);
-            let h = Math.floor(timer / 3600);
-            let s = Math.floor(timer % 3600 % 60);
+        // interval envoi toutes les secondes un compteur 1, 2, ...
+        const interval$ = interval(1000).
+        pipe(
+            map(second => {
+                let hours = Math.floor(second / 3600);
+                let minutes = Math.floor(second / 60);
 
-             return ('0' + h).slice(-2) + ":" + ('0' + min).slice(-2) + ":" + ('0' + s).slice(-2);
-          }
-             ),
-             take(12*60*60) //Arrête le compteur au bout de 12h
-    )
-    counterConvert.subscribe(
-          (value) =>
-            this.time = value
-          );
-          console.error();
+                return `${hours} h ${minutes - hours * 60} min ${second - minutes * 60} s`
+            }),
+            take(12 * 60 * 3) // permet d'arrêter ici au bout de 12*3 minutes interval particulier à interval RxJS 6
+        )
 
-
-
-      }
+        // on souscrit à l'Observable interval
+        interval$.subscribe(
+            time => this.time = time
+        );
+    }
 
 }

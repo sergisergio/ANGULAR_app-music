@@ -1,47 +1,77 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Album } from '../album';
+import { ALBUMS } from '../mock-albums';
 import { AlbumService } from '../album.service';
 
+import {
+    trigger,
+    style,
+    animate,
+    transition,
+    query,
+    stagger,
+} from '@angular/animations';
+import { Observable } from 'rxjs';
+
 @Component({
-  selector: 'app-albums',
-  templateUrl: './albums.component.html',
-  styleUrls: ['./albums.component.scss']
+    selector: 'app-albums',
+    templateUrl: './albums.component.html',
+    styleUrls: ['./albums.component.scss'],
+    animations: [
+        trigger('listAnimation', [
+            transition('void => *', [
+                query('div.card', [
+                    // état par défaut
+                    style({ transform: 'translateX(-200%)' }),
+                    // appliqué un délais pour l'animation
+                    stagger(1000, [
+                        animate('1s ease-out', style({ transform: 'translateX(0)' }))
+                    ])
+                ])
+            ])
+        ]),
+    ]
 })
 export class AlbumsComponent implements OnInit {
-  titlePage: string = "Page principale Albums Music";
-  albums: Album[] = [];
-  selectedAlbum: Album;
-  status: string = null; // pour gérer l'affichage des caractères [play]
-  perPage : number = 5;
 
-  constructor(private albumService: AlbumService) {
-    // récupération des données depuis Firebase avec la méthode HttpClient
-    console.log(this.albumService.count());
-  }
+    titlePage: string = "Page princiaple Albums Music";
+    albums: Album[] = ALBUMS;
+    selectedAlbum: Album;
+    status: string = null; // pour gérer l'affichage des caractères [play]
+    count;
 
-  ngOnInit() {
-    this.albumService.paginate(0,5).subscribe(albums => this.albums = albums)  }
+    constructor(private ablumService: AlbumService) {
+        // récupération des données depuis Firebase
+        // console.log(this.ablumService.getAlbums().subscribe(
+        //   albums => console.log(albums)
+        // ))
+    }
 
-  onSelect(album: Album) {
-    //console.log(album);
-    this.selectedAlbum = album;
-  }
+    ngOnInit() {
+        this.ablumService.paginate(0, 5).subscribe(albums => this.albums = albums);
+        this.count = this.ablumService.count().subscribe(
+            count => this.count = count
+        );
+    }
 
-  playParent($event){
-    this.status = $event.id; // identifiant unique
-    console.log($event)
-    this.albumService.switchOn($event);
-  }
+    onSelect(album: Album) {
+        //console.log(album);
+        this.selectedAlbum = album;
+    }
 
-  search($event) {
-    console.log($event);
-    if ($event) this.albums = $event;
-  }
+    playParent($event) {
+        this.status = $event.id; // identifiant unique
+        this.ablumService.switchOn($event);
+    }
 
-  // mise à jour de la pagination
-  paginate($event) {
-    this.albumService.paginate($event.start, $event.end).subscribe(albums => this.albums = albums);
-  }
+    search($event) {
+        if ($event) this.albums = $event;
+    }
 
+    paginate($event) {
+        this.ablumService.paginate($event.start, $event.end).subscribe(
+            albums => this.albums = albums
+        )
+    }
 }

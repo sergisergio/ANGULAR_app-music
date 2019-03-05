@@ -1,24 +1,25 @@
 <app-search (searchAlbums)="search($event)"></app-search>
 <div class="row content">
   <!-- AlbumDetails -->
-  <div class="col-sm-4 video">
+  <div  class="col-sm-4 video">
     <app-album-details [album]="selectedAlbum" (onPlay)="playParent($event)"></app-album-details>
-    <!--<app-fruits [mangue]="selectedFruit"></app-fruits>-->
   </div>
   <!-- .video -->
-  <div class="col-sm-8 music">
-    <h1>{{ titlePage }}</h1>
-    <app-audio-player [album]="selectedAlbum"></app-audio-player>
-    <!-- Pagination -->
+  <div [@listAnimation]="count" class="col-sm-8 music">
     <app-paginate (setPaginate)="paginate($event)"></app-paginate>
+    <h1>{{ titlePage }}</h1>
+    <!-- Pagination -->
     <!-- let index permet de récupérer l'indice numérique de la liste -->
     <div class="card" *ngFor="let album of albums; let index = index;">
       <div class="card-header">
         <!-- permet d'afficher l'index -->
-        {{ index + 1 }} Pop <span *ngIf="status==album.id">[play]</span>
+        {{ index + 1 }} Pop
+        <span *ngIf="status==album.id">[play]</span>
       </div>
       <div class="card-body">
-        <h5 class="card-title"><a class="text-info" routerLink="/album/{{album.id}}">{{album.title}}</a></h5>
+        <h5 class="card-title">
+          <a class="text-info" routerLink="/album/{{album.id}}">{{album.title}}</a>
+        </h5>
         <p class="card-text">{{album.description}}</p>
         <!-- condition vérifiez si il y a des tags présent dans un album si ce n'est pas le cas la directive ne crée pas l'élément HTML dans le Component -->
         <ul *ngIf="album.tags" class="list-inline">

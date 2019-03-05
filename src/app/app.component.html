@@ -1,35 +1,35 @@
-<div style="display: block; margin: 0 auto;">
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <a class="navbar-brand" routerLink="">{{ title }}</a>
+<div class="container-fuild principal">
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <a class="navbar-brand">{{ title }}</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
             aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <ul class="navbar-nav mr-auto">
-        <li routerLinkActive="active">
-          <a class="nav-link" routerLink="">Accueil
-            <span class="sr-only">(current)</span>
+        <li class="nav-item active">
+          <a class="nav-link" routerLink="/albums" routerLinkActive="active">Home
           </a>
         </li>
-        <li routerLinkActive="active">
-          <a class="nav-link" routerLink="/auth">Se connecter
-            <span class="sr-only">(current)</span>
+        <li class="nav-item active">
+          <a class="nav-link" routerLink="/login" routerLinkActive="active">
+            Se connecter
           </a>
         </li>
       </ul>
       <ul>
-        <li>time : {{ time }} </li>
+        <li>
+          {{ time }}
+        </li>
       </ul>
     </div>
   </nav>
   <!-- place de l'audio player déclenché depuis le component AlbumDetailsComponent -->
+  <app-audio-player></app-audio-player>
   <!--
-  à la place du sélecteur des albums on mettra maintenant le chargement des components
-  -->
-  <div class="container" style="margin-top: 50px;">
-    <router-outlet></router-outlet>
+à la place du sélecteur des albums on mettra maintenant le chargement des components
+-->
+  <div>
+    <router-outlet ></router-outlet>
   </div>
 </div>
-
-
