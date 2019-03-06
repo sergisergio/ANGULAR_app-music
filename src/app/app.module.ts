@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -16,6 +16,7 @@ import { AlbumDescriptionComponent } from './album-description/album-description
 import { PaginateComponent } from './paginate/paginate.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AudioPlayerComponent } from './audioplayer/audioplayer.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -28,11 +29,13 @@ import { AudioPlayerComponent } from './audioplayer/audioplayer.component';
     FruitsComponent,
     AlbumDescriptionComponent,
     PaginateComponent,
-    AudioPlayerComponent
+    AudioPlayerComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,

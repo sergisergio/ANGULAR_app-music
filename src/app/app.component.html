@@ -1,4 +1,4 @@
-<div class="container-fuild principal">
+<div class="container-fluid principal">
   <nav class="navbar navbar-expand-lg navbar-light">
     <a class="navbar-brand">{{ title }}</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
@@ -7,14 +7,22 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" routerLink="/albums" routerLinkActive="active">Home
+        <li class="nav-item" routerLinkActive="active">
+          <a class="nav-link" routerLink="/albums">Accueil
           </a>
         </li>
-        <li class="nav-item active">
-          <a class="nav-link" routerLink="/login" routerLinkActive="active">
-            Se connecter
+        <li class="nav-item" routerLinkActive="active" *ngIf="!authState">
+          <a class="nav-link" routerLink="auth/signup">Inscription</a>
+        </li>
+        <li class="nav-item" routerLinkActive="active" *ngIf="!authState">
+          <a class="nav-link" routerLink="/auth" routerLinkActive="active">
+            Connexion
           </a>
+        </li>
+        <li>
+          <a (click)="onSignOut()"
+             style="cursor:pointer"
+             *ngIf="authState">Déconnexion</a>
         </li>
       </ul>
       <ul>
