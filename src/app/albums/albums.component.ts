@@ -35,7 +35,7 @@ import { Observable } from 'rxjs';
 })
 export class AlbumsComponent implements OnInit {
 
-    titlePage: string = "Page princiaple Albums Music";
+    titlePage: string = "Page principale Albums Music";
     albums: Album[] = ALBUMS;
     selectedAlbum: Album;
     status: string = null; // pour gérer l'affichage des caractères [play]

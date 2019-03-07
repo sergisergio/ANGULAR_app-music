@@ -2,7 +2,14 @@ import { Injectable } from '@angular/core';
 // Importez les modules nécessaires pour l'authentification
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { User } from '../models/User';
+
+
+
 
 @Injectable({
     providedIn: 'root'
@@ -10,8 +17,11 @@ import {Router} from '@angular/router';
 export class AuthService {
 
     private authState: boolean = false;
+    private currentUserSubject: BehaviorSubject<User>;
+    public currentUser: Observable<User>;
 
-    constructor(private router: Router) {
+    constructor(private router: Router,
+                private http: HttpClient) {
         // Observable il teste si l'utilisateur est connecté
         firebase.auth().onAuthStateChanged( (user) => {
             if (user) {
@@ -20,44 +30,49 @@ export class AuthService {
                 this.authState = null;
             }
         });
-    }
-    // ...
 
-    /*signIn() {
-    return new Promise(
-      (resolve, reject) => {
-        setTimeout(
-          () => {
-            this.isAuth = true;
-            resolve(true);
-          }, 2000
+        this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
+        this.currentUser = this.currentUserSubject.asObservable();
+    }
+
+    public get currentUserValue(): User {
+        return this.currentUserSubject.value;
+    }
+
+  auth(email: string, password: string): Promise<any> {
+
+    return firebase.auth().signInWithEmailAndPassword(email, password);
+  }
+
+    createNewUser(email: string, password: string) {
+        return new Promise(
+          (resolve, reject) => {
+            firebase.auth().createUserWithEmailAndPassword(email, password).then(
+              () => {
+                resolve();
+              },
+              (error) => {
+                reject(error);
+              }
+            );
+          }
         );
+    }
+
+
+
+  logout() {
+
+    firebase.auth().signOut().then(
+      () => {
+        this.router.navigate(['/albums'], { queryParams: { message: `Success logout` } });
       }
     );
-  }*/
+  }
 
-  /*signOut() {
-    this.isAuth = false;
-  }*/
+  // Return true if user is logged in
+  authenticated(): boolean {
+    return this.authState == true;
+  }
 
-    signInUser(email: string, password: string) {
-        return new Promise(
-            (resolve, reject) => {
-                firebase.auth().signInWithEmailAndPassword(email, password).then(
-                    () => {
-                        resolve();
-                    },
-                    (error) => {
-                        reject(error);
-                    }
-                );
-            }
-        );
-    }
-
-    authenticated() {}
-
-    signOutUser() {
-        firebase.auth().signOut();
-    }
 }
