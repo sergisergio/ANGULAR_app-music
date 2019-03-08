@@ -10,6 +10,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { GuardService} from './services/guard.service';
 
 const routes: Routes = [
+    { path: 'admin', /*canActivate: [GuardService],*/component: AlbumComponent },
     {
       path: 'albums',
       component: AlbumsComponent
@@ -30,11 +31,7 @@ const routes: Routes = [
     {
       path: 'album/:id',
       component: AlbumDescriptionComponent
-    },
-    {
-        path: 'admin', canActivate: [GuardService],
-        component: AlbumComponent
-    },
+    }/*,
     {
       path: 'not-found',
       component: FourOhFourComponent
@@ -42,7 +39,7 @@ const routes: Routes = [
     {
       path: '**',
       redirectTo: 'not-found'
-    }
+    }*/
 ];
 
 @NgModule({

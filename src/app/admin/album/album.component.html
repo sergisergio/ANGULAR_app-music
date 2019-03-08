@@ -21,13 +21,15 @@
   <tr *ngFor="let album of albums | async">
     <th scope="row">{{ album.id }}</th>
     <td>
-      <button type="button" class="btn btn-secondary">udpate</button>
-    </td>
+      <button type="button"
+              class="btn btn-secondary"
+              routerLink="/admin/update/{{ album.id }}">update</button>
     <td> {{ album.name }}</td>
     <td>{{ album.title }}</td>
     <td>{{ album.duration }}</td>
     <td>
       <button class="btn btn-danger"
+              routerLink="/admin/delete/{{ album.id }}/deleted"
       >Delete</button>
     </td>
   </tr>

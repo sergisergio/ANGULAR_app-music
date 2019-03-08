@@ -17,9 +17,8 @@ const httpOptions = {
     providedIn: 'root'
 })
 export class AlbumService {
-
-    private albumsUrl = 'https://music-60f33.firebaseio.com/albums';
-    private albumListsUrl = 'https://music-60f33.firebaseio.com/albumLists';
+    private albumsUrl = 'https://app-music-4f48e.firebaseio.com/albums';
+    private albumListsUrl = 'https://app-music-4f48e.firebaseio.com/albumLists';
 
     sendCurrentNumberPage = new Subject<number>(); // pour mettre à jour la pagination
     subjectAlbum = new Subject<Album>();
@@ -140,10 +139,10 @@ export class AlbumService {
     uploadFile(file: File) {
 
         const randomId = Math.random().toString(36).substring(2);
-        //const ref = firebase.app().storage("gs://music-60f33.appspot.com").ref();
-        //const imagesRef = ref.child('images');
+        const ref = firebase.app().storage("gs://app-music-4f48e.appspot.com").ref();
+        const imagesRef = ref.child('images');
 
-        //return imagesRef.child(randomId + '.png').put(file);
+        return imagesRef.child(randomId + '.png').put(file);
 
     }
 
