@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AlbumsComponent } from './albums/albums.component';
+import { AlbumComponent } from './admin/album/album.component';
 import { AlbumDescriptionComponent } from './album-description/album-description.component';
 import { SigninComponent } from './auth/signin/signin.component';
 import { SignupComponent } from './auth/signup/signup.component';
@@ -32,7 +33,7 @@ const routes: Routes = [
     },
     {
         path: 'admin', canActivate: [GuardService],
-        component: DashboardComponent
+        component: AlbumComponent
     },
     {
       path: 'not-found',

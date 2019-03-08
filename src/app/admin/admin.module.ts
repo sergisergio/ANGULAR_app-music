@@ -1,25 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AlbumsComponent } from '../albums/albums.component';
-import { Routes, RouterModule } from '@angular/router';
-
-const adminRoutes = [
-  {
-    path: 'admin',
-    component: AlbumsComponent
-  }
-]
+import { AlbumComponent } from './album/album.component';
+import { ShareModule } from '../share/share.module';
 
 @NgModule({
-  declarations: [AlbumsComponent],
+  declarations: [AlbumComponent],
   imports: [
     CommonModule,
-    RouterModule.forRoot(adminRoutes)
+    ShareModule
   ],
-  exports: [
-    AlbumsComponent,
-    RouterModule
-  ]
+  exports: [AlbumComponent]
 })
 
 export class AdminModule { }

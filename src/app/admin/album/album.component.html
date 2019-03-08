@@ -1,0 +1,37 @@
+<p>
+  <button class="btn btn-dark" routerLink="/admin/add">Add Album</button>
+</p>
+<p>
+  <button class="btn btn-dark">Nombre d'album(s) : {{ count | async }}</button>
+</p>
+<app-paginate (setPaginate)="paginate($event)"></app-paginate>
+<table class="table table-dark">
+  <thead>
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">update</th>
+    <th scope="col">name</th>
+    <th scope="col">title</th>
+    <th scope="col">duration</th>
+    <th scope="col">delete</th>
+  </tr>
+  </thead>
+  <tbody>
+  <!-- une autre manière de récupérer les albums est le pipe async -->
+  <tr *ngFor="let album of albums | async">
+    <th scope="row">{{ album.id }}</th>
+    <td>
+      <button type="button" class="btn btn-secondary">udpate</button>
+    </td>
+    <td> {{ album.name }}</td>
+    <td>{{ album.title }}</td>
+    <td>{{ album.duration }}</td>
+    <td>
+      <button class="btn btn-danger"
+      >Delete</button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<app-paginate (setPaginate)="paginate($event)"></app-paginate>
+

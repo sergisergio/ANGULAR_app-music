@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AdminModule } from './admin/admin.module';
+import { ShareModule } from './share/share.module';
 
 import * as firebase from 'firebase';
 
@@ -18,7 +19,6 @@ import { GuardService } from './services/guard.service';
 import { SearchComponent } from './search/search.component';
 import { FruitsComponent } from './fruits/fruits.component';
 import { AlbumDescriptionComponent } from './album-description/album-description.component';
-import { PaginateComponent } from './paginate/paginate.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AudioPlayerComponent } from './audioplayer/audioplayer.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -44,7 +44,6 @@ firebase.initializeApp(config);
     SearchComponent,
     FruitsComponent,
     AlbumDescriptionComponent,
-    PaginateComponent,
     AudioPlayerComponent,
     DashboardComponent,
     SignupComponent
@@ -56,6 +55,8 @@ firebase.initializeApp(config);
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    AdminModule,
+    ShareModule
   ],
   providers: [,
       AuthService,
