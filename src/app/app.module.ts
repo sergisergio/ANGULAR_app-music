@@ -58,7 +58,7 @@ firebase.initializeApp(config);
     AdminModule,
     ShareModule
   ],
-  providers: [,
+  providers: [
       AuthService,
       GuardService
   ],

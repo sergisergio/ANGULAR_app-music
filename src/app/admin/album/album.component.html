@@ -29,7 +29,7 @@
     <td>{{ album.duration }}</td>
     <td>
       <button class="btn btn-danger"
-              routerLink="/admin/delete/{{ album.id }}/deleted"
+              (click)="destroy(album.id)"
       >Delete</button>
     </td>
   </tr>
@@ -37,3 +37,8 @@
 </table>
 <app-paginate (setPaginate)="paginate($event)"></app-paginate>
 
+<app-modal-dialog [showModal]="showModal" (choice)="choice($event)" >
+  <h2>Voulez-vous vraiment supprimer cet album ?</h2>
+  <button class="btn"  (click)="no()">Non</button>
+  <button class="btn btn-danger" (click)="yes()">Oui</button>
+</app-modal-dialog>

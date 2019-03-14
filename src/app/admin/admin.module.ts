@@ -7,6 +7,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { GuardService } from '../services/guard.service';
 import { UpdateAlbumComponent } from './update-album/update-album.component';
 import { DeleteAlbumComponent } from './delete-album/delete-album.component';
+import { ModalDialogComponent } from './modal-dialog/modal-dialog.component';
 
 const routes: Routes = [
 { path: 'admin/add', component: AddAlbumComponent },
@@ -15,7 +16,7 @@ const routes: Routes = [
 ]
 
 @NgModule({
-  declarations: [AlbumComponent, AddAlbumComponent, UpdateAlbumComponent, DeleteAlbumComponent],
+  declarations: [AlbumComponent, AddAlbumComponent, UpdateAlbumComponent, DeleteAlbumComponent, ModalDialogComponent],
   imports: [
     CommonModule,
     ShareModule,

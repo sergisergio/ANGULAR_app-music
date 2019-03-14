@@ -14,6 +14,9 @@ import {
 } from '@angular/animations';
 import { Observable } from 'rxjs';
 
+import { merge} from 'rxjs';
+import { map } from 'rxjs/operators';
+
 @Component({
     selector: 'app-albums',
     templateUrl: './albums.component.html',
@@ -41,7 +44,7 @@ export class AlbumsComponent implements OnInit {
     status: string = null; // pour gérer l'affichage des caractères [play]
     count;
 
-    constructor(private ablumService: AlbumService) {
+    constructor(private albumService: AlbumService) {
         // récupération des données depuis Firebase
         // console.log(this.ablumService.getAlbums().subscribe(
         //   albums => console.log(albums)
@@ -49,10 +52,21 @@ export class AlbumsComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.ablumService.paginate(0, 5).subscribe(albums => this.albums = albums);
-        this.count = this.ablumService.count().subscribe(
-            count => this.count = count
-        );
+
+        // déterminer l'ordre dans lequel les Observables s'exécuteront
+        const Albums = this.albumService.paginate(0, 5);
+        const Count = this.albumService.count();
+
+        const triggerAlbumsCount = merge(
+          Count.pipe(
+            map(c => this.count = c/5)
+          ),
+          Albums.pipe(
+            map(albums => this.albums = albums)
+          ),
+        )
+
+        triggerAlbumsCount.subscribe(m => console.log(m))
     }
 
     onSelect(album: Album) {
@@ -62,7 +76,7 @@ export class AlbumsComponent implements OnInit {
 
     playParent($event) {
         this.status = $event.id; // identifiant unique
-        this.ablumService.switchOn($event);
+        this.albumService.switchOn($event);
     }
 
     search($event) {
@@ -70,7 +84,7 @@ export class AlbumsComponent implements OnInit {
     }
 
     paginate($event) {
-        this.ablumService.paginate($event.start, $event.end).subscribe(
+        this.albumService.paginate($event.start, $event.end).subscribe(
             albums => this.albums = albums
         )
     }
